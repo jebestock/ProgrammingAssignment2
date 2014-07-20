@@ -5,24 +5,33 @@
 
 makeCacheMatrix <- function(x = matrix()) {
     m    <- NULL
-    minv <- NULL
-    setMatrix    <- function(y){
-        m     <<- y
-        m_inv <<- NULL
+    m_inv <- NULL
+    
+    setMatrix       <- function(y){
+        x <<- y
     }
-    setInvMatrix <- function(y){
+    getMatrix       <- function(){
+        x
+    }
+    setCacheMatrix    <- function(y){
+        m     <<- y
+    }
+    setCacheInvMatrix <- function(y){
         m_inv <<- y
     }
-    getMatrix    <- function(){
+    getCacheMatrix    <- function(){
         m
     }
-    getInvMatrix <- function(){
+    getCacheInvMatrix <- function(){
         m_inv
     }
-    list(setMatrix    = setMatrix,
-         setInvMatrix = setInvMatrix,
-         getMatrix    = getMatrix,
-         getInvMatrix = getInvMatrix)
+    
+    list(setMatrix              = setMatrix,
+         getMatrix              = getMatrix,
+         setCacheMatrix         = setCacheMatrix,
+         setCacheInvMatrix      = setCacheInvMatrix,
+         getCacheMatrix         = getCacheMatrix,
+         getCacheInvMatrix      = getCacheInvMatrix)
 }
 
 
@@ -35,15 +44,16 @@ makeCacheMatrix <- function(x = matrix()) {
 ## the matrix and its inverse in the cache.
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
-    m_inv <- x$getInvMatrix()
-    m     <- x$getMatrix()
-    if( !is.null(m_inv) && m==x){
-        message("getting cached inverse matrix")
-        return(m_inv)
+    m      <- x$getMatrix()
+    mc     <- x$getCacheMatrix()
+    mc_inv <- x$getCacheInvMatrix()
+    if( !is.null(mc_inv) && identical(m,mc)){
+            message("getting cached inverse matrix")
+            return(mc_inv)
     }
     new_m <- x$getMatrix()
     m_inv <- solve(new_m,...)
-    x$setMatrix(new_m)
-    x$setInvMatrix(m_inv)
+    x$setCacheMatrix(new_m)
+    x$setCacheInvMatrix(m_inv)
     return(m_inv)
 }
