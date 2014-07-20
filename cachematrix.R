@@ -1,6 +1,10 @@
 ## Put comments here that give an overall description of what your
 ## functions do
-
+## makeCacheMatrix defines an object containing sub-functions to
+## setting an input matrix via setMatrix
+## getting the matrix via getMatrix
+## storing and fetching a matrix to/from the cache
+## storing and fetchgin the inverse matrix to/from the cache
 ## Write a short comment describing this function
 
 makeCacheMatrix <- function(x = matrix()) {
